@@ -16,6 +16,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
+import com.google.accompanist.permissions.PermissionStatus
 import com.google.accompanist.permissions.rememberPermissionState
 import com.studyai.health.R
 import com.studyai.health.ui.viewmodels.HeartRateViewModel
@@ -23,7 +24,7 @@ import com.studyai.health.ui.viewmodels.HeartRateViewModel
 /**
  * Heart rate measurement screen
  */
-@OptIn(ExperimentalPermissionsApi::class)
+@OptIn(ExperimentalPermissionsApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun HeartRateScreen(
     navController: NavController,
@@ -38,14 +39,14 @@ fun HeartRateScreen(
     
     // Request camera permission if not granted
     LaunchedEffect(key1 = true) {
-        if (!cameraPermissionState.hasPermission) {
+        if (cameraPermissionState.status != PermissionStatus.Granted) {
             cameraPermissionState.launchPermissionRequest()
         }
     }
     
     Scaffold(
         topBar = {
-            TopAppBar(
+            CenterAlignedTopAppBar(
                 title = { Text(stringResource(id = R.string.heart_rate_title)) },
                 navigationIcon = {
                     IconButton(onClick = { navController.navigateUp() }) {
@@ -66,7 +67,7 @@ fun HeartRateScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             // Check camera permission
-            if (cameraPermissionState.hasPermission) {
+            if (cameraPermissionState.status == PermissionStatus.Granted) {
                 HeartRateMeasurementContent(
                     measurementState = measurementState,
                     heartRate = heartRate,

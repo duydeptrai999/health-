@@ -137,3 +137,59 @@ Các components được thiết kế có khả năng tiếp cận cao:
 3. Đảm bảo UI thích ứng với các kích thước màn hình khác nhau
 4. Cung cấp phản hồi trực quan khi người dùng tương tác
 5. Duy trì tính nhất quán về UI/UX trên toàn bộ ứng dụng 
+
+# Tính năng đo SpO2 qua camera
+
+## Tổng quan
+
+Tính năng đo SpO2 (Đo nồng độ oxy trong máu) sử dụng camera và đèn flash của điện thoại để phân tích ánh sáng phản xạ từ ngón tay người dùng, từ đó ước tính nồng độ oxy trong máu.
+
+## Cách sử dụng
+
+1. **Khởi động tính năng**: Chọn "SpO2" từ menu chính hoặc màn hình chính
+2. **Đọc và đồng ý miễn trừ trách nhiệm**: Đây không phải thiết bị y tế, chỉ dùng tham khảo
+3. **Thực hiện đo**:
+   - Đặt đầu ngón tay (thường là ngón trỏ) lên camera và đèn flash
+   - Giữ yên ngón tay, không nhấn quá mạnh
+   - Đảm bảo che kín cả camera và đèn flash
+4. **Xem kết quả**: Sau khi hoàn thành, kết quả sẽ hiển thị với phân loại mức độ sức khỏe
+5. **Lưu kết quả**: Chọn "Save Result" để lưu kết quả vào lịch sử
+
+## Công nghệ và nguyên lý
+
+- Sử dụng nguyên lý quang phổ (photoplethysmography - PPG)
+- Phân tích tỷ lệ hấp thụ ánh sáng giữa kênh đỏ và kênh xanh lá
+- Hemoglobin giàu oxy và nghèo oxy hấp thụ ánh sáng khác nhau
+- Thuật toán phân tích tín hiệu để tính tỷ lệ R (tỷ lệ của tỷ lệ)
+- Áp dụng công thức: SpO2 = 110 - 25 * R (công thức đơn giản hóa)
+
+## Phân loại kết quả
+
+- **Excellent (95-100%)**: Mức oxy trong máu bình thường
+- **Average (90-94%)**: Oxy trong máu thấp, cần theo dõi
+- **Bad (<90%)**: Oxy trong máu nguy hiểm, nên tham khảo ý kiến y tế
+
+## Lưu ý
+
+- Đây không phải thiết bị y tế được chứng nhận
+- Chỉ nên dùng cho mục đích tham khảo
+- Độ chính xác phụ thuộc vào chất lượng camera, ánh sáng và cách đặt ngón tay
+- Nếu bạn gặp vấn đề về sức khỏe, hãy tham khảo ý kiến bác sĩ
+- Nên thực hiện đo ở môi trường ánh sáng ổn định
+- Tránh di chuyển ngón tay trong quá trình đo
+
+## Cải thiện độ chính xác
+
+- Thực hiện đo trong môi trường ánh sáng ổn định
+- Đảm bảo ngón tay sạch và không quá lạnh
+- Giữ ngón tay thật yên trong suốt quá trình đo
+- Không nhấn quá mạnh lên camera
+- Thực hiện nhiều lần đo và lấy giá trị trung bình
+
+## Lưu trữ dữ liệu
+
+Kết quả đo sẽ được lưu vào cơ sở dữ liệu cục bộ với các thông tin:
+- Giá trị SpO2
+- Thời gian đo
+- Độ tin cậy của phép đo
+- Ghi chú (nếu có) 

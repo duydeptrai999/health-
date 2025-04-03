@@ -46,6 +46,20 @@
     <string name="spo2_normal">Your blood oxygen level is normal</string>
     <string name="spo2_history">Blood Oxygen History</string>
     <string name="spo2_disclaimer">This measurement is for reference only and not for medical use</string>
+    <string name="spo2_measurement_title">Blood Oxygen Measurement</string>
+    <string name="spo2_disclaimer_title">Health Disclaimer</string>
+    <string name="spo2_disclaimer_content">This application is not a medical device and should not be used for medical diagnosis. The measurements provided are for informational purposes only. If you experience health issues, please consult a healthcare professional.</string>
+    <string name="spo2_disclaimer_accept">I Understand</string>
+    <string name="spo2_instruction_title">Place Your Finger</string>
+    <string name="spo2_instruction_content">Cover the camera and flash completely with your fingertip. Hold steady during measurement. Ensure good lighting for accurate results.</string>
+    <string name="spo2_start_measurement">Start Measurement</string>
+    <string name="spo2_keep_finger_steady">Keep your finger steady</string>
+    <string name="spo2_result_title">Your Blood Oxygen Level</string>
+    <string name="spo2_result_normal">Your blood oxygen level is within normal range.</string>
+    <string name="spo2_result_low">Your blood oxygen level is lower than normal. Consider resting and measuring again.</string>
+    <string name="spo2_result_danger">Your blood oxygen level is critically low. Consider consulting a healthcare professional.</string>
+    <string name="spo2_measure_again">Measure Again</string>
+    <string name="spo2_error_title">Measurement Error</string>
     
     <!-- Stress Analysis -->
     <string name="stress_title">Stress Analysis</string>

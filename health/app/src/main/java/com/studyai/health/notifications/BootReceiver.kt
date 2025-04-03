@@ -20,7 +20,7 @@ class BootReceiver : BroadcastReceiver() {
             
             // Reschedule all active reminders
             CoroutineScope(Dispatchers.IO).launch {
-                reminderRepository.getActiveReminders().forEach { reminder ->
+                reminderRepository.getActiveRemindersSync().forEach { reminder ->
                     // Calculate next trigger time based on reminder schedule
                     val nextTriggerTime = reminder.calculateNextTriggerTime()
                     

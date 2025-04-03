@@ -91,7 +91,7 @@ fun SummaryCard(
                 Spacer(modifier = Modifier.weight(1f))
                 
                 Icon(
-                    imageVector = AppIcons.Forward,
+                    imageVector = AppIcons.Back,
                     contentDescription = "View details",
                     tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )

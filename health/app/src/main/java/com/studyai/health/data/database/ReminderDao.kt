@@ -29,7 +29,7 @@ interface ReminderDao {
     fun getActiveReminders(): LiveData<List<Reminder>>
     
     @Query("SELECT * FROM reminders WHERE isEnabled = 1")
-    suspend fun getActiveReminders(): List<Reminder>
+    suspend fun getActiveRemindersSync(): List<Reminder>
     
     @Query("SELECT * FROM reminders WHERE type = :type ORDER BY timeHour, timeMinute ASC")
     fun getRemindersByType(type: Reminder.ReminderType): LiveData<List<Reminder>>

@@ -3,6 +3,7 @@ package com.studyai.health.data.model
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.Relation
+import androidx.room.Embedded
 
 /**
  * Entity representing a conversation with the AI
@@ -35,11 +36,12 @@ data class AiMessage(
  * Data class representing a conversation with its messages
  */
 data class ConversationWithMessages(
+    @Embedded
+    val conversation: AiConversation,
     @Relation(
         parentColumn = "id",
         entityColumn = "conversationId"
     )
-    val conversation: AiConversation,
     val messages: List<AiMessage>
 )
 

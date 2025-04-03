@@ -138,7 +138,7 @@ fun MetricCard(
             }
             
             Icon(
-                imageVector = AppIcons.Forward,
+                imageVector = AppIcons.Back,
                 contentDescription = "View details",
                 tint = MaterialTheme.colorScheme.onSurfaceVariant
             )

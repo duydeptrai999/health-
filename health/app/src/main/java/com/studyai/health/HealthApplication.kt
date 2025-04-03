@@ -16,7 +16,13 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
+import dagger.hilt.android.HiltAndroidApp
 
+/**
+ * Base Application class for the Health app.
+ * This class is annotated with HiltAndroidApp to enable Hilt dependency injection.
+ */
+@HiltAndroidApp
 class HealthApplication : Application() {
 
     // Database
@@ -81,7 +87,7 @@ class HealthApplication : Application() {
             
             // Reminder Channel
             val reminderChannel = NotificationChannel(
-                NotificationHelper.CHANNEL_REMINDERS,
+                CHANNEL_REMINDERS,
                 "Health Reminders",
                 NotificationManager.IMPORTANCE_HIGH
             ).apply {
@@ -92,7 +98,7 @@ class HealthApplication : Application() {
             
             // Health Alert Channel
             val alertChannel = NotificationChannel(
-                NotificationHelper.CHANNEL_ALERTS,
+                CHANNEL_ALERTS,
                 "Health Alerts",
                 NotificationManager.IMPORTANCE_HIGH
             ).apply {
@@ -109,5 +115,7 @@ class HealthApplication : Application() {
     companion object {
         lateinit var instance: HealthApplication
             private set
+        const val CHANNEL_REMINDERS = "reminders_channel"
+        const val CHANNEL_ALERTS = "alerts_channel"
     }
 } 

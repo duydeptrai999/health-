@@ -18,9 +18,9 @@ class ReminderRepository(private val reminderDao: ReminderDao) {
     
     fun getActiveReminders() = reminderDao.getActiveReminders()
     
-    suspend fun getActiveReminders(): List<Reminder> =
+    suspend fun getActiveRemindersSync(): List<Reminder> =
         withContext(Dispatchers.IO) {
-            reminderDao.getActiveReminders()
+            reminderDao.getActiveRemindersSync()
         }
     
     fun getRemindersByType(type: Reminder.ReminderType) =
@@ -94,7 +94,7 @@ class ReminderRepository(private val reminderDao: ReminderDao) {
      * Schedule all active reminders
      */
     suspend fun scheduleAllActiveReminders(context: Context) {
-        val activeReminders = getActiveReminders()
+        val activeReminders = getActiveRemindersSync()
         
         activeReminders.forEach { reminder ->
             scheduleReminder(context, reminder)

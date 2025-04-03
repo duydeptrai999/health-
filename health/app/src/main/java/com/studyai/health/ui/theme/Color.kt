@@ -49,11 +49,11 @@ val TertiaryDark = Color(0xFFFFA000)
 val TertiaryLight = Color(0xFFFFECB3)
 
 // Health status colors
-val HealthExcellent = Color(0xFF00C853)
-val HealthGood = Color(0xFF64DD17)
-val HealthAverage = Color(0xFFFFD600)
-val HealthPoor = Color(0xFFFF9100)
-val HealthBad = Color(0xFFFF3D00)
+val HealthExcellent = Color(0xFF4CAF50)
+val HealthGood = Color(0xFF8BC34A)
+val HealthAverage = Color(0xFFFFEB3B)
+val HealthPoor = Color(0xFFFF9800)
+val HealthBad = Color(0xFFF44336)
 
 // Health metric colors
 val Heart = Color(0xFFE91E63)
@@ -71,4 +71,31 @@ val ChartGrid = Color(0xFFE0E0E0)
 val ChartLabel = Color(0xFF757575)
 val ChartLine = Color(0xFF42A5F5)
 val ChartAxis = Color(0xFF9E9E9E)
-val ChartHighlight = Color(0xFFFFA726) 
+val ChartHighlight = Color(0xFFFFA726)
+
+// Primary colors
+val PrimaryVariant = Color(0xFF388E3C)
+val SecondaryVariant = Color(0xFF1976D2)
+
+// Light Theme
+val LightBackground = Color(0xFFF5F5F5)
+val LightSurface = Color(0xFFFFFFFF)
+val LightError = Color(0xFFB00020)
+
+// Dark Theme
+val DarkError = Color(0xFFCF6679)
+
+// Chart Colors
+val ChartBlue = Color(0xFF2196F3)
+val ChartGreen = Color(0xFF4CAF50)
+val ChartOrange = Color(0xFFFF9800)
+val ChartPurple = Color(0xFF9C27B0)
+val ChartRed = Color(0xFFF44336)
+val ChartYellow = Color(0xFFFFEB3B)
+
+// Text Colors
+val TextDisabled = Color(0xFFBDBDBD)
+
+// Misc Colors
+val Divider = Color(0xFFBDBDBD)
+val Overlay = Color(0x52000000) 
