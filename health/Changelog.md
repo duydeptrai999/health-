@@ -35,6 +35,22 @@
 - Bổ sung tham số để bỏ qua cảnh báo chi phí và lưu prompt đi kèm với ảnh đã tạo
 - Cập nhật script analyze_image.js để tối ưu hóa cho việc phân tích và tạo prompt cho ảnh vector
 - Cải thiện script vectorize_image.js với xử lý màu sắc thông minh hơn và hỗ trợ nhiều định dạng đầu vào
+- Xây dựng hệ thống UI Theme cho ứng dụng sử dụng Material 3
+  - Tạo Color.kt với các màu sắc chính, phụ và màu dành cho health metrics
+  - Tạo Type.kt với typography style dựa trên Material 3
+  - Tạo Shape.kt với các shape khác nhau cho các thành phần UI
+  - Tạo Dimensions.kt để chuẩn hóa các kích thước trong app
+  - Tạo Theme.kt để kết hợp tất cả thành một theme chung với hỗ trợ Dark Mode và Dynamic Color
+  - Tạo Icons.kt để quản lý icons trong ứng dụng
+
+- Xây dựng các UI Components cơ bản
+  - Buttons: PrimaryButton, SecondaryButton, IconButtons
+  - Cards: MetricCard, StatusCard, SummaryCard
+
+- Thêm documentations:
+  - README.md trong thư mục theme giải thích cấu trúc theme
+  - Help.md với hướng dẫn sử dụng các components
+  - Hướng dẫn tổng quan về toàn bộ hệ thống UI đã xây dựng
 
 ### Changed
 
@@ -48,6 +64,14 @@
 - Tích hợp cảnh báo chi phí trong quy trình tạo ảnh DALL-E để tránh chi phí không cần thiết
 - Cải thiện UX của các script DALL-E với giao diện dòng lệnh thân thiện và đầy màu sắc
 - Nâng cấp dalle-workflow.mdc với hướng dẫn chi tiết về tối ưu prompt cho từng loại ảnh
+- Áp dụng thiết kế chủ đạo là màu xanh lá (primary) và xanh dương (secondary) cho ứng dụng sức khỏe
+- Tối ưu hóa cấu trúc folder cho dễ quản lý và mở rộng
+
+### Tech
+- Sử dụng Jetpack Compose cho tất cả UI components
+- Tích hợp Material 3 design system
+- Hỗ trợ Dark Mode và Dynamic Color (Material You) trên Android 12+
+- Sử dụng CompositionLocal để truy cập giá trị dimensions
 
 ### Deprecated
 

@@ -1,0 +1,143 @@
+<resources>
+    <!-- App Name -->
+    <string name="app_name">StudyAI Health</string>
+    
+    <!-- Common -->
+    <string name="ok">OK</string>
+    <string name="cancel">Hủy</string>
+    <string name="save">Lưu</string>
+    <string name="delete">Xóa</string>
+    <string name="back">Quay lại</string>
+    <string name="next">Tiếp</string>
+    <string name="loading">Đang tải…</string>
+    <string name="error">Lỗi</string>
+    <string name="retry">Thử lại</string>
+    
+    <!-- Navigation -->
+    <string name="nav_home">Trang chủ</string>
+    <string name="nav_heart_rate">Nhịp tim</string>
+    <string name="nav_spo2">SpO2</string>
+    <string name="nav_stress">Căng thẳng</string>
+    <string name="nav_history">Lịch sử</string>
+    <string name="nav_ai_advisor">Tư vấn AI</string>
+    <string name="nav_schedule">Lịch trình</string>
+    <string name="nav_settings">Cài đặt</string>
+    
+    <!-- Heart Rate Measurement -->
+    <string name="heart_rate_title">Đo nhịp tim</string>
+    <string name="heart_rate_instruction">Đặt đầu ngón tay lên ống kính camera và giữ yên</string>
+    <string name="heart_rate_measuring">Đang đo nhịp tim của bạn…</string>
+    <string name="heart_rate_result">Nhịp tim của bạn là %1$d BPM</string>
+    <string name="heart_rate_save_result">Lưu kết quả</string>
+    <string name="heart_rate_retry">Đo lại</string>
+    <string name="heart_rate_low">Nhịp tim của bạn thấp</string>
+    <string name="heart_rate_normal">Nhịp tim của bạn bình thường</string>
+    <string name="heart_rate_high">Nhịp tim của bạn cao</string>
+    <string name="heart_rate_history">Lịch sử nhịp tim</string>
+    
+    <!-- SpO2 Measurement -->
+    <string name="spo2_title">Đo nồng độ oxy trong máu</string>
+    <string name="spo2_instruction">Đặt đầu ngón tay lên ống kính camera với đèn flash bật</string>
+    <string name="spo2_measuring">Đang đo nồng độ oxy trong máu…</string>
+    <string name="spo2_result">SpO2 của bạn là %1$d%%</string>
+    <string name="spo2_save_result">Lưu kết quả</string>
+    <string name="spo2_retry">Đo lại</string>
+    <string name="spo2_low">Nồng độ oxy trong máu của bạn thấp</string>
+    <string name="spo2_normal">Nồng độ oxy trong máu của bạn bình thường</string>
+    <string name="spo2_history">Lịch sử SpO2</string>
+    <string name="spo2_disclaimer">Phép đo này chỉ để tham khảo và không dùng cho mục đích y tế</string>
+    
+    <!-- Stress Analysis -->
+    <string name="stress_title">Phân tích mức độ căng thẳng</string>
+    <string name="stress_instruction">Hoàn thành đo nhịp tim để phân tích mức độ căng thẳng</string>
+    <string name="stress_analyzing">Đang phân tích mức độ căng thẳng của bạn…</string>
+    <string name="stress_result">Mức độ căng thẳng của bạn là %1$s</string>
+    <string name="stress_level_low">Thấp</string>
+    <string name="stress_level_medium">Trung bình</string>
+    <string name="stress_level_high">Cao</string>
+    <string name="stress_save_result">Lưu kết quả</string>
+    <string name="stress_recommendation">Đề xuất</string>
+    <string name="stress_history">Lịch sử mức độ căng thẳng</string>
+    
+    <!-- History -->
+    <string name="history_title">Lịch sử sức khỏe</string>
+    <string name="history_empty">Chưa có dữ liệu nào được ghi lại</string>
+    <string name="history_filter">Lọc</string>
+    <string name="history_filter_all">Tất cả</string>
+    <string name="history_filter_heart_rate">Nhịp tim</string>
+    <string name="history_filter_spo2">SpO2</string>
+    <string name="history_filter_stress">Căng thẳng</string>
+    <string name="history_period_day">Ngày</string>
+    <string name="history_period_week">Tuần</string>
+    <string name="history_period_month">Tháng</string>
+    <string name="history_export">Xuất dữ liệu</string>
+    <string name="history_export_success">Dữ liệu đã được xuất thành công</string>
+    
+    <!-- AI Advisor -->
+    <string name="ai_advisor_title">Tư vấn sức khỏe AI</string>
+    <string name="ai_advisor_hint">Hỏi về sức khỏe…</string>
+    <string name="ai_advisor_send">Gửi</string>
+    <string name="ai_advisor_thinking">AI đang suy nghĩ…</string>
+    <string name="ai_advisor_disclaimer">Lời khuyên AI không thay thế cho tư vấn y tế chuyên nghiệp</string>
+    <string name="ai_advisor_offline">AI hiện đang ngoại tuyến</string>
+    <string name="ai_advisor_history">Lịch sử hội thoại</string>
+    
+    <!-- Schedule & Reminders -->
+    <string name="schedule_title">Lịch trình sức khỏe</string>
+    <string name="schedule_add">Thêm nhắc nhở</string>
+    <string name="schedule_type">Loại nhắc nhở</string>
+    <string name="schedule_type_measurement">Đo sức khỏe</string>
+    <string name="schedule_type_water">Uống nước</string>
+    <string name="schedule_type_exercise">Tập thể dục</string>
+    <string name="schedule_type_medication">Thuốc</string>
+    <string name="schedule_type_custom">Tùy chỉnh</string>
+    <string name="schedule_time">Thời gian</string>
+    <string name="schedule_repeat">Lặp lại</string>
+    <string name="schedule_repeat_daily">Hàng ngày</string>
+    <string name="schedule_repeat_weekly">Hàng tuần</string>
+    <string name="schedule_repeat_custom">Tùy chỉnh</string>
+    <string name="schedule_save">Lưu nhắc nhở</string>
+    <string name="schedule_delete">Xóa nhắc nhở</string>
+    <string name="schedule_notification">Thông báo nhắc nhở</string>
+    
+    <!-- Diet Plan -->
+    <string name="diet_title">Khuyến nghị dinh dưỡng</string>
+    <string name="diet_generate">Tạo kế hoạch dinh dưỡng</string>
+    <string name="diet_based_on">Dựa trên dữ liệu sức khỏe của bạn</string>
+    <string name="diet_breakfast">Bữa sáng</string>
+    <string name="diet_lunch">Bữa trưa</string>
+    <string name="diet_dinner">Bữa tối</string>
+    <string name="diet_snacks">Bữa nhẹ</string>
+    
+    <!-- Settings -->
+    <string name="settings_title">Cài đặt</string>
+    <string name="settings_theme">Giao diện</string>
+    <string name="settings_theme_light">Sáng</string>
+    <string name="settings_theme_dark">Tối</string>
+    <string name="settings_theme_system">Theo hệ thống</string>
+    <string name="settings_language">Ngôn ngữ</string>
+    <string name="settings_notifications">Thông báo</string>
+    <string name="settings_data">Quản lý dữ liệu</string>
+    <string name="settings_data_export">Xuất tất cả dữ liệu</string>
+    <string name="settings_data_delete">Xóa tất cả dữ liệu</string>
+    <string name="settings_about">Giới thiệu</string>
+    <string name="settings_version">Phiên bản</string>
+    <string name="settings_privacy">Chính sách bảo mật</string>
+    <string name="settings_terms">Điều khoản dịch vụ</string>
+    
+    <!-- Permissions -->
+    <string name="permission_camera_title">Quyền truy cập camera</string>
+    <string name="permission_camera_description">Cần quyền truy cập camera để đo nhịp tim và SpO2</string>
+    <string name="permission_notification_title">Quyền thông báo</string>
+    <string name="permission_notification_description">Cần quyền thông báo để gửi nhắc nhở sức khỏe cho bạn</string>
+    <string name="permission_denied">Quyền truy cập bị từ chối</string>
+    <string name="permission_go_to_settings">Đi đến Cài đặt</string>
+    
+    <!-- Error Messages -->
+    <string name="error_camera">Không thể truy cập camera</string>
+    <string name="error_measurement">Đo lường thất bại, vui lòng thử lại</string>
+    <string name="error_network">Lỗi mạng, vui lòng kiểm tra kết nối</string>
+    <string name="error_api">Không thể kết nối với máy chủ</string>
+    <string name="error_data_load">Không thể tải dữ liệu</string>
+    <string name="error_data_save">Không thể lưu dữ liệu</string>
+</resources> 
