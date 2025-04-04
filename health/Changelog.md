@@ -4,6 +4,14 @@
 
 ### Added
 
+- Hoàn thành tính năng Đo SpO2 qua camera
+  - Thêm SpO2MeasurementScreen với giao diện người dùng trực quan
+  - Triển khai OxygenSaturationAnalyzer để tính toán nồng độ oxy từ video camera
+  - Tích hợp CameraPreview với đèn flash cho độ chính xác cao
+  - Thêm SpO2ViewModel để quản lý trạng thái và xử lý dữ liệu
+  - Hiển thị kết quả đo với phân loại mức độ (bình thường, thấp, nguy hiểm)
+  - Lưu lịch sử đo vào cơ sở dữ liệu
+  - Hiển thị miễn trừ trách nhiệm y tế và hướng dẫn chi tiết
 - Tích hợp hệ thống lưu trữ kinh nghiệm dự án với cấu trúc thư mục experiences/
 - Thêm quy tắc experience-system-workflow.mdc để quản lý việc ghi lại và sử dụng kinh nghiệm
 - Tạo template và ví dụ mẫu cho file kinh nghiệm với cấu trúc chuẩn

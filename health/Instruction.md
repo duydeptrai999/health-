@@ -60,7 +60,7 @@ Tham khảo hướng dẫn chi tiết tại [instructions/setup/environment.md](
 - Đo được nhịp tim trong điều kiện ánh sáng khác nhau
 - Hiển thị và lưu kết quả thành công
 
-### 2. Đo SpO2 qua camera ❌
+### 2. Đo SpO2 qua camera ✅
 
 **Mô tả**: Đo nồng độ oxy trong máu thông qua phân tích quang phổ từ camera.
 
