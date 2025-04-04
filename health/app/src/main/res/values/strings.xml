@@ -54,12 +54,18 @@
     <string name="spo2_instruction_content">Cover the camera and flash completely with your fingertip. Hold steady during measurement. Ensure good lighting for accurate results.</string>
     <string name="spo2_start_measurement">Start Measurement</string>
     <string name="spo2_keep_finger_steady">Keep your finger steady</string>
+    <string name="spo2_measuring_title">Measuring SpO2</string>
+    <string name="spo2_measuring_instruction">Keep your finger steady and cover both camera and flash completely</string>
     <string name="spo2_result_title">Your Blood Oxygen Level</string>
     <string name="spo2_result_normal">Your blood oxygen level is within normal range.</string>
     <string name="spo2_result_low">Your blood oxygen level is lower than normal. Consider resting and measuring again.</string>
     <string name="spo2_result_danger">Your blood oxygen level is critically low. Consider consulting a healthcare professional.</string>
     <string name="spo2_measure_again">Measure Again</string>
     <string name="spo2_error_title">Measurement Error</string>
+    <string name="spo2_error_no_readings">No valid readings detected. Please try again.</string>
+    <string name="spo2_error_poor_signal">Poor signal detected. Make sure your finger covers both the camera and flash completely.</string>
+    <string name="spo2_error_no_flash">Flash is not available or not working. Measurements may be less accurate.</string>
+    <string name="spo2_error_general">Something went wrong. Please try again.</string>
     
     <!-- Stress Analysis -->
     <string name="stress_title">Stress Analysis</string>

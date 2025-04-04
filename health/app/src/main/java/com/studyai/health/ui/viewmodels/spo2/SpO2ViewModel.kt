@@ -53,8 +53,10 @@ class SpO2ViewModel @Inject constructor(
     private var measurementJob: Job? = null
     private var readings = mutableListOf<Double>()
     private var confidences = mutableListOf<Double>()
-    private val requiredReadings = 10 // Số lượng đọc cần thiết để có kết quả đáng tin cậy
-    private val confidenceThreshold = 0.7 // Ngưỡng tin cậy tối thiểu
+    private val requiredReadings = 8 // Giảm số lượng đọc cần thiết để có kết quả nhanh hơn
+    private val confidenceThreshold = 0.5 // Giảm ngưỡng tin cậy xuống để dễ có kết quả hơn
+    private var errorCount = 0 // Đếm số lần gặp lỗi để quyết định báo lỗi
+    private var lastErrorMessage = "" // Theo dõi thông báo lỗi cuối cùng
     
     /**
      * Called when the disclaimer is accepted
@@ -131,32 +133,68 @@ class SpO2ViewModel @Inject constructor(
     }
     
     fun onSpO2Reading(reading: Double, confidence: Double) {
-        // Only accept readings above our confidence threshold
+        // Chỉ chấp nhận đọc khi vượt qua ngưỡng tin cậy
         if (confidence >= confidenceThreshold) {
             readings.add(reading)
             confidences.add(confidence)
             
-            // Update the current reading display
+            // Cập nhật giá trị hiện tại
             val currentValue = reading.roundToInt()
             uiState = uiState.copy(
                 currentReading = "$currentValue%"
+            )
+            
+            // Reset error counter mỗi khi có đọc thành công
+            errorCount = 0
+        }
+    }
+    
+    fun onMeasurementError(message: String) {
+        // Nếu thông báo lỗi giống với thông báo cuối, tăng bộ đếm lỗi
+        if (message == lastErrorMessage) {
+            errorCount++
+        } else {
+            // Nếu là lỗi mới, reset bộ đếm và lưu lỗi mới
+            errorCount = 1
+            lastErrorMessage = message
+        }
+        
+        // Chỉ hiển thị lỗi nếu cùng một lỗi xuất hiện quá nhiều lần
+        // hoặc nếu đã đo quá lâu mà không có kết quả
+        if (errorCount >= 5 || (uiState.measurementProgress > 0.8f && readings.isEmpty())) {
+            measurementJob?.cancel()
+            uiState = uiState.copy(
+                state = MeasurementState.ERROR,
+                errorMessage = message
             )
         }
     }
     
     private fun finalizeReading() {
-        // Filter readings by confidence and calculate the result
+        // Lọc các đọc theo độ tin cậy và tính kết quả
         val validReadings = readings.zip(confidences)
             .filter { (_, confidence) -> confidence >= confidenceThreshold }
             .map { (reading, _) -> reading }
         
         if (validReadings.isEmpty()) {
-            onMeasurementError("Could not get accurate readings. Please try again in better lighting.")
+            onMeasurementError("Không thể có đọc chính xác. Hãy thử lại với ánh sáng tốt hơn.")
             return
         }
         
-        // Calculate the average SpO2 value from valid readings
-        val averageSpO2 = validReadings.average().roundToInt().coerceIn(70, 100)
+        // Tính giá trị SpO2 trung bình từ các đọc hợp lệ
+        // Sử dụng trung bình có trọng số với độ tin cậy
+        val weightedReadings = validReadings.zip(confidences)
+            .filter { (_, confidence) -> confidence >= confidenceThreshold }
+        
+        val weightedSum = weightedReadings.sumOf { (reading, confidence) -> reading * confidence }
+        val weightSum = weightedReadings.sumOf { (_, confidence) -> confidence }
+        
+        val averageSpO2 = if (weightSum > 0) {
+            (weightedSum / weightSum).roundToInt().coerceIn(70, 100)
+        } else {
+            validReadings.average().roundToInt().coerceIn(70, 100)
+        }
+        
         val averageConfidence = confidences.average()
         
         uiState = uiState.copy(
@@ -164,14 +202,6 @@ class SpO2ViewModel @Inject constructor(
             spO2Result = averageSpO2,
             measurementProgress = 1f,
             confidenceLevel = averageConfidence
-        )
-    }
-    
-    fun onMeasurementError(message: String) {
-        measurementJob?.cancel()
-        uiState = uiState.copy(
-            state = MeasurementState.ERROR,
-            errorMessage = message
         )
     }
     

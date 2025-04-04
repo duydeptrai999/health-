@@ -46,6 +46,26 @@
     <string name="spo2_normal">Nồng độ oxy trong máu của bạn bình thường</string>
     <string name="spo2_history">Lịch sử SpO2</string>
     <string name="spo2_disclaimer">Phép đo này chỉ để tham khảo và không dùng cho mục đích y tế</string>
+    <string name="spo2_measurement_title">Đo nồng độ oxy trong máu</string>
+    <string name="spo2_disclaimer_title">Miễn trừ trách nhiệm y tế</string>
+    <string name="spo2_disclaimer_content">Ứng dụng này không phải là thiết bị y tế và không nên sử dụng cho mục đích chẩn đoán y tế. Các phép đo chỉ nhằm mục đích tham khảo. Nếu bạn gặp vấn đề sức khỏe, vui lòng tham khảo ý kiến chuyên gia y tế.</string>
+    <string name="spo2_disclaimer_accept">Tôi hiểu</string>
+    <string name="spo2_instruction_title">Đặt ngón tay của bạn</string>
+    <string name="spo2_instruction_content">Che kín camera và đèn flash bằng đầu ngón tay. Giữ yên trong quá trình đo. Đảm bảo ánh sáng tốt để có kết quả chính xác.</string>
+    <string name="spo2_start_measurement">Bắt đầu đo</string>
+    <string name="spo2_keep_finger_steady">Giữ ngón tay yên</string>
+    <string name="spo2_measuring_title">Đang đo SpO2</string>
+    <string name="spo2_measuring_instruction">Giữ ngón tay yên và che kín cả camera lẫn đèn flash</string>
+    <string name="spo2_result_title">Nồng độ oxy trong máu của bạn</string>
+    <string name="spo2_result_normal">Nồng độ oxy trong máu của bạn nằm trong khoảng bình thường.</string>
+    <string name="spo2_result_low">Nồng độ oxy trong máu của bạn thấp hơn bình thường. Hãy cân nhắc nghỉ ngơi và đo lại.</string>
+    <string name="spo2_result_danger">Nồng độ oxy trong máu của bạn ở mức nguy hiểm. Hãy cân nhắc tham khảo ý kiến chuyên gia y tế.</string>
+    <string name="spo2_measure_again">Đo lại</string>
+    <string name="spo2_error_title">Lỗi Đo</string>
+    <string name="spo2_error_no_readings">Không phát hiện được chỉ số hợp lệ. Vui lòng thử lại.</string>
+    <string name="spo2_error_poor_signal">Tín hiệu yếu. Hãy đảm bảo ngón tay che kín cả camera và đèn flash.</string>
+    <string name="spo2_error_no_flash">Đèn flash không khả dụng hoặc không hoạt động. Kết quả đo có thể kém chính xác.</string>
+    <string name="spo2_error_general">Đã xảy ra lỗi. Vui lòng thử lại.</string>
     
     <!-- Stress Analysis -->
     <string name="stress_title">Phân tích mức độ căng thẳng</string>

@@ -19,11 +19,14 @@ import androidx.navigation.compose.rememberNavController
 import com.studyai.health.ui.components.BottomNavigationBar
 import com.studyai.health.ui.screens.HeartRateScreen
 import com.studyai.health.ui.screens.HomeScreen
+import com.studyai.health.ui.screens.spo2.SpO2MeasurementScreen
 import com.studyai.health.ui.theme.StudyAIHealthTheme
+import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * Main activity for the application
  */
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,7 +72,7 @@ fun MainScreen() {
 sealed class AppScreen(val route: String) {
     object Home : AppScreen("home")
     object HeartRate : AppScreen("heart_rate")
-    object SpO2 : AppScreen("spo2")
+    object SpO2 : AppScreen("spo2_measurement")
     object Stress : AppScreen("stress")
     object History : AppScreen("history")
     object AiAdvisor : AppScreen("ai_advisor")
@@ -91,6 +94,11 @@ fun AppNavHost(navController: NavHostController) {
         }
         composable(AppScreen.HeartRate.route) {
             HeartRateScreen(navController = navController)
+        }
+        composable(AppScreen.SpO2.route) {
+            SpO2MeasurementScreen(
+                onBackClick = { navController.popBackStack() }
+            )
         }
         // Other screen composables will be added as they are implemented
     }

@@ -45,9 +45,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionStatus
 import com.google.accompanist.permissions.rememberPermissionState
@@ -66,7 +66,7 @@ import kotlinx.coroutines.delay
 @Composable
 fun SpO2MeasurementScreen(
     onBackClick: () -> Unit,
-    viewModel: SpO2ViewModel = viewModel()
+    viewModel: SpO2ViewModel = hiltViewModel()
 ) {
     val uiState = viewModel.uiState
     val cameraPermissionState = rememberPermissionState(permission = Manifest.permission.CAMERA)
@@ -248,12 +248,13 @@ fun ReadyContent(onStartMeasuring: () -> Unit) {
 fun MeasuringContent(
     progress: Float,
     currentReading: String,
-    onSpO2Reading: (Double, Double) -> Unit,
-    onError: (String) -> Unit
+    onSpO2Reading: (reading: Double, confidence: Double) -> Unit,
+    onError: (message: String) -> Unit
 ) {
+    var errorMessage by remember { mutableStateOf<String?>(null) }
     val animatedProgress by animateFloatAsState(
         targetValue = progress,
-        animationSpec = tween(durationMillis = 1000),
+        animationSpec = tween(durationMillis = 500),
         label = "ProgressAnimation"
     )
     
@@ -265,7 +266,7 @@ fun MeasuringContent(
         verticalArrangement = Arrangement.Center
     ) {
         Text(
-            text = stringResource(R.string.spo2_measuring),
+            text = stringResource(R.string.spo2_measuring_title),
             style = MaterialTheme.typography.headlineMedium,
             color = MaterialTheme.colorScheme.onBackground,
             textAlign = TextAlign.Center
@@ -273,38 +274,48 @@ fun MeasuringContent(
         
         Spacer(modifier = Modifier.height(16.dp))
         
+        // Hiển thị thông báo trước khi sử dụng camera
+        AnimatedVisibility(
+            visible = errorMessage != null,
+            enter = fadeIn(),
+            exit = fadeOut()
+        ) {
+            errorMessage?.let {
+                Text(
+                    text = it,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.error,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
+            }
+        }
+        
         // Use actual CameraPreview instead of placeholder
         CameraPreview(
             enableTorch = true,
             onSpO2Reading = onSpO2Reading,
-            onError = onError
+            onError = { message ->
+                errorMessage = message
+                onError(message)
+            }
+        )
+        
+        Spacer(modifier = Modifier.height(24.dp))
+        
+        // Progress indicator
+        CircularProgressIndicator(
+            progress = { animatedProgress },
+            modifier = Modifier.size(80.dp),
+            strokeWidth = 8.dp,
+            color = MaterialTheme.colorScheme.primary
         )
         
         Spacer(modifier = Modifier.height(16.dp))
         
-        // Display current reading if available
         Text(
             text = currentReading,
             style = MaterialTheme.typography.displayMedium,
-            color = MaterialTheme.colorScheme.onBackground,
-            fontWeight = FontWeight.Bold
-        )
-        
-        Spacer(modifier = Modifier.height(16.dp))
-        
-        CircularProgressIndicator(
-            progress = { animatedProgress },
-            modifier = Modifier.size(120.dp),
-            color = MaterialTheme.colorScheme.primary,
-            trackColor = MaterialTheme.colorScheme.surfaceVariant,
-            strokeWidth = 12.dp
-        )
-        
-        Spacer(modifier = Modifier.height(16.dp))
-        
-        Text(
-            text = "${(animatedProgress * 100).toInt()}%",
-            style = MaterialTheme.typography.titleLarge,
             color = MaterialTheme.colorScheme.primary,
             fontWeight = FontWeight.Bold
         )
@@ -312,9 +323,28 @@ fun MeasuringContent(
         Spacer(modifier = Modifier.height(8.dp))
         
         Text(
-            text = stringResource(R.string.spo2_keep_finger_steady),
+            text = "${(animatedProgress * 100).toInt()}%",
+            style = MaterialTheme.typography.titleMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+        
+        Spacer(modifier = Modifier.height(16.dp))
+        
+        // Guidance text
+        Text(
+            text = stringResource(R.string.spo2_measuring_instruction),
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onBackground,
+            textAlign = TextAlign.Center
+        )
+        
+        // Thêm hướng dẫn về đèn flash
+        Spacer(modifier = Modifier.height(8.dp))
+        
+        Text(
+            text = "Đảm bảo đèn flash sáng và ngón tay che kín cả camera lẫn đèn flash",
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.error,
             textAlign = TextAlign.Center
         )
     }
@@ -423,6 +453,23 @@ fun ErrorContent(
     errorMessage: String,
     onRetry: () -> Unit
 ) {
+    // Xác định string resource ID dựa trên nội dung thông báo lỗi
+    val messageResId = when {
+        errorMessage.contains("No valid readings") || 
+        errorMessage.contains("Không phát hiện được chỉ số") -> R.string.spo2_error_no_readings
+        
+        errorMessage.contains("Poor signal") || 
+        errorMessage.contains("Tín hiệu yếu") || 
+        errorMessage.contains("cover") || 
+        errorMessage.contains("che kín") -> R.string.spo2_error_poor_signal
+        
+        errorMessage.contains("Flash") || 
+        errorMessage.contains("flash") || 
+        errorMessage.contains("đèn") -> R.string.spo2_error_no_flash
+        
+        else -> R.string.spo2_error_general
+    }
+    
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -449,7 +496,7 @@ fun ErrorContent(
         Spacer(modifier = Modifier.height(8.dp))
         
         Text(
-            text = errorMessage,
+            text = stringResource(messageResId),
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onBackground,
             textAlign = TextAlign.Center

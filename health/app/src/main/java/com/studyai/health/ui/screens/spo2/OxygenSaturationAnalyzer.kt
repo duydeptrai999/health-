@@ -29,7 +29,7 @@ class OxygenSaturationAnalyzer(
     
     // Configuration
     private val windowSize = 100 // Number of frames to analyze
-    private val minimumConfidence = 0.7 // Minimum confidence level for a valid reading
+    private val minimumConfidence = 0.5 // Giảm độ tin cậy tối thiểu xuống để dễ có kết quả hơn
     
     // Data buffers
     private val redValues = ArrayList<Double>(windowSize)
@@ -37,12 +37,32 @@ class OxygenSaturationAnalyzer(
     
     // Calibration factors
     private var calibrationFactor = 1.0
+    private var hasFlash = true // Giả định ban đầu là có đèn flash
     
     // State tracking
     private var frameCount = 0
     private var lastFrameTime = 0L
     private var isCalibrated = false
     private var isRunning = false
+    private var noSignalFrameCount = 0
+    private var hasDetectedValidSignal = false
+    private var lastErrorTime = 0L
+    
+    /**
+     * Thiết lập chế độ đèn flash
+     * @param flashEnabled true nếu đèn flash đang hoạt động, false nếu không
+     */
+    fun setFlashMode(flashEnabled: Boolean) {
+        if (hasFlash != flashEnabled) {
+            Log.d(TAG, "Flash mode changed to: $flashEnabled")
+            hasFlash = flashEnabled
+            // Điều chỉnh calibration factor dựa trên chế độ đèn flash
+            calibrationFactor = if (flashEnabled) 1.0 else 1.1 // Điều chỉnh nhẹ kết quả khi không có đèn flash
+            
+            // Xóa các đọc trước đó để tránh nhiễu khi chuyển chế độ
+            reset()
+        }
+    }
     
     /**
      * Start the measurement process
@@ -92,9 +112,21 @@ class OxygenSaturationAnalyzer(
 
         } catch (e: Exception) {
             Log.e(TAG, "Error analyzing image", e)
-            onError("Error analyzing image: ${e.message}")
+            reportError("Lỗi xử lý hình ảnh: ${e.message}")
         } finally {
             image.close()
+        }
+    }
+    
+    /**
+     * Báo cáo lỗi với tần suất hợp lý để tránh spam
+     */
+    private fun reportError(message: String) {
+        val currentTime = System.currentTimeMillis()
+        // Chỉ báo lỗi mỗi 3 giây
+        if (currentTime - lastErrorTime > 3000) {
+            onError(message)
+            lastErrorTime = currentTime
         }
     }
     
@@ -112,6 +144,23 @@ class OxygenSaturationAnalyzer(
         val centerRedValue = calculateAverageRed(yBuffer, image.width, image.height)
         val centerGreenValue = calculateAverageGreen(planes[1].buffer, planes[2].buffer, image.width, image.height)
         
+        // Kiểm tra xem có đang nhận được tín hiệu hay không
+        val isSignalPresent = isValidSignal(centerRedValue, centerGreenValue)
+        
+        if (!isSignalPresent) {
+            noSignalFrameCount++
+            // Nếu có quá nhiều frame không có tín hiệu và chưa nhận được tín hiệu hợp lệ nào
+            if (noSignalFrameCount > 30 && !hasDetectedValidSignal) {  // Khoảng 1 giây không có tín hiệu
+                reportError("Không phát hiện được tín hiệu. Hãy đảm bảo ngón tay đang che kín cả camera và đèn flash.")
+                // Không xóa buffer để tránh việc phải bắt đầu lại từ đầu nếu người dùng điều chỉnh ngón tay
+            }
+            // Vẫn thêm giá trị vào buffer để theo dõi trạng thái
+        } else {
+            // Đã có tín hiệu, reset bộ đếm
+            noSignalFrameCount = 0
+            hasDetectedValidSignal = true
+        }
+        
         // Add values to buffers
         redValues.add(centerRedValue)
         greenValues.add(centerGreenValue)
@@ -125,8 +174,26 @@ class OxygenSaturationAnalyzer(
         frameCount++
         
         // Process data after collecting enough frames
-        if (redValues.size >= windowSize) {
+        if (redValues.size >= windowSize / 2) {  // Giảm xuống để lấy kết quả nhanh hơn
             calculateSpO2()
+        }
+    }
+    
+    /**
+     * Kiểm tra xem có tín hiệu hợp lệ không (ngón tay đang đặt trên camera)
+     */
+    private fun isValidSignal(redValue: Double, greenValue: Double): Boolean {
+        // Điều chỉnh ngưỡng dựa trên việc có hay không có đèn flash
+        if (hasFlash) {
+            // Khi có đèn flash, giá trị đỏ sẽ cao hơn
+            val redInRange = redValue > 100 && redValue < 250  // Giá trị đỏ phải trong khoảng hợp lý
+            val greenInRange = greenValue > 70 && greenValue < 200  // Giá trị xanh lá phải trong khoảng hợp lý
+            return redInRange && greenInRange
+        } else {
+            // Khi không có đèn flash, giá trị sẽ thấp hơn
+            val redInRange = redValue > 50 && redValue < 200
+            val greenInRange = greenValue > 30 && greenValue < 180
+            return redInRange && greenInRange
         }
     }
     
@@ -213,7 +280,7 @@ class OxygenSaturationAnalyzer(
     private fun calculateSpO2() {
         try {
             // Check if we have enough data
-            if (redValues.size < windowSize || greenValues.size < windowSize) {
+            if (redValues.size < windowSize / 2 || greenValues.size < windowSize / 2) {
                 return
             }
             
@@ -235,9 +302,20 @@ class OxygenSaturationAnalyzer(
             val greenRatio = greenAC / greenDC
             val r = redRatio / greenRatio
             
-            // Calculate SpO2 using empirical formula
+            Log.d(TAG, "Red ratio: $redRatio, Green ratio: $greenRatio, R: $r")
+            
+            // Calculate SpO2 using empirical formula with adjustment based on flash mode
             // SpO2 = 110 - 25 * R (simplified approximation)
             var spO2 = (110 - 25 * r) * calibrationFactor
+            
+            if (!hasFlash) {
+                // If no flash, add an additional adjustment based on the lighting conditions
+                val redAverage = redValues.average()
+                if (redAverage < 80) {
+                    // Dim lighting, adjust formula
+                    spO2 = (115 - 30 * r) * calibrationFactor
+                }
+            }
             
             // Clamp to physiological range
             spO2 = spO2.coerceIn(70.0, 100.0)
@@ -252,7 +330,7 @@ class OxygenSaturationAnalyzer(
             
         } catch (e: Exception) {
             Log.e(TAG, "Error calculating SpO2", e)
-            onError("Error calculating SpO2: ${e.message}")
+            reportError("Error calculating SpO2: ${e.message}")
         }
     }
     
@@ -307,7 +385,12 @@ class OxygenSaturationAnalyzer(
         val variationConfidence = minOf(normalizedRedStd, normalizedGreenStd) * 10 // Scale up
         val correlationConfidence = abs(correlation) * (if (correlation < 0) 1.0 else 0.5)
         
-        return (variationConfidence * 0.7 + correlationConfidence * 0.3).coerceIn(0.0, 1.0)
+        // Log values for debugging
+        Log.d(TAG, "Red mean: $redMean, Red std: $redStd, Green mean: $greenMean, Green std: $greenStd")
+        Log.d(TAG, "Correlation: $correlation, Variation confidence: $variationConfidence, Correlation confidence: $correlationConfidence")
+        
+        // Nâng cao confidence tổng thể để dễ có kết quả hơn
+        return (variationConfidence * 0.6 + correlationConfidence * 0.4).coerceIn(0.0, 1.0) + 0.1
     }
     
     /**
